@@ -1,10 +1,13 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+import os
 
 app = Flask(__name__)
 
-# Database must be in "instance" folder
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///energy.sqlite3'
+basedir = os.path.abspath(os.path.dirname(__file__))
+database_path = os.path.join(basedir, 'energy.sqlite3')
+
+app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{database_path}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 
