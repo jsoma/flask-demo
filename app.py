@@ -4,8 +4,7 @@ import os
 
 app = Flask(__name__)
 
-basedir = os.path.abspath(os.path.dirname(__file__))
-database_path = os.path.join(basedir, 'energy.sqlite3')
+database_path = os.path.join(os.path.dirname(__file__), 'energy.sqlite3')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{database_path}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
