@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="bg-white shadow-md rounded-lg p-6">
+  <h1 class="text-2xl font-bold mb-4">{{ plant.plant_name }}</h1>
+  <ul class="space-y-2">
+      <li>
+          Plant type: 
+          <a href="{{ url_for('by_source', primary_source=plant.primary_source) }}" class="text-blue-600 hover:underline">
+              {{ plant.primary_source }}
+          </a>
+      </li>
+      <li>
+          Utility name: 
+          <a href="{{ url_for('by_owner', utility_id=plant.utility_id) }}" class="text-blue-600 hover:underline">
+              {{ plant.utility_name }}
+          </a>
+      </li>
+  </ul>
+  <div id="map" class="mt-4 h-64 bg-gray-200"></div>
+</div>
+
+<style>
+  #map { height: 50vh; }
+</style>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+crossorigin=""/>
+ <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+
+<script>
+  var coords = [{{ plant.latitude}}, {{ plant.longitude}}];
+  var map = L.map('map').setView(coords, 13);
+
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+L.marker(coords).addTo(map)
+    .bindPopup('{{plant.plant_name}}')
+    .openPopup();
+</script>
+{% endblock %}
